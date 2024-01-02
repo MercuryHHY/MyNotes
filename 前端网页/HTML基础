@@ -1,0 +1,259 @@
+
+
+
+
+[百度前端技术学园 (baidu.com)](https://ife.baidu.com/)
+
+
+
+
+
+当然，请看下面的代码示例，它结合了HTML和CSS来制作一个奶茶点餐页面，并实现了三栏布局：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>奶茶点餐页面</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+        
+        .container {
+            display: flex;
+        }
+        
+        .left-column {
+            width: 200px;
+            background-color: #cccccc;
+            padding: 20px;
+        }
+        
+        .middle-column {
+            flex-grow: 1;
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 0 10px;
+        }
+        
+        .right-column {
+            width: 200px;
+            background-color: #cccccc;
+            padding: 20px;
+        }
+        
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666666;
+            font-weight: bold;
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            margin-bottom: 10px;
+        }
+        
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>奶茶点餐页面</h1>
+    <div class="container">
+        <div class="left-column">
+            <!-- 左侧内容 -->
+            <h2>左侧</h2>
+            <p>固定宽度</p>
+        </div>
+    
+        <div class="middle-column">
+            <!-- 中间内容 -->
+            <form>
+                <label for="name">姓名:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                
+                <label for="drink">选择奶茶:</label>
+                <select id="drink" name="drink">
+                    <option value="classic">经典奶茶</option>
+                    <option value="matcha">抹茶奶茶</option>
+                    <option value="taro">芋头奶茶</option>
+                </select><br><br>
+        
+                <label for="sugar">糖分:</label>
+                <input type="radio" id="regular" name="sugar" value="regular" checked>
+                <label for="regular">正常</label>
+                <input type="radio" id="less" name="sugar" value="less">
+                <label for="less">少糖</label>
+                <input type="radio" id="half" name="sugar" value="half">
+                <label for="half">半糖</label><br><br>
+                
+                <label for="toppings">加料:</label>
+                <input type="checkbox" id="pearls" name="toppings" value="pearls">
+                <label for="pearls">珍珠</label>
+                <input type="checkbox" id="pudding" name="toppings" value="pudding">
+                <label for="pudding">布丁</label>
+                <input type="checkbox" id="grass_jelly" name="toppings" value="grass_jelly">
+                <label for="grass_jelly">仙草</label><br><br>
+                
+                <input type="submit" value="提交">
+            </form>
+        </div>
+    
+        <div class="right-column">
+            <!-- 右侧内容 -->
+            <h2>右侧</h2>
+            <p>固定宽度</p>
+        </div>
+    </div>
+</body>
+</html>
+```
+
+在上述代码中，我们首先定义了一个`.container`类来创建一个弹性容器，然后在HTML中将左侧、中间和右侧内容分别放置在对应的`<div>`中，并为它们应用了相应的类名，使其实现了三栏布局。接下来，我们在CSS样式部分为各个元素添加了样式，包括背景颜色、边距、填充和宽度等。
+
+你可以根据需要修改样式内容来调整页面的外观和布局。
+
+希望这个示例对你有所帮助！
+
+
+
+
+
+这段代码是一个简单的HTML页面，用于创建一个奶茶点餐页面的前端界面。让我逐行解释代码的含义：
+
+1. `DOCTYPE` 声明指定文档类型为HTML。
+2. 开始`<html>`标签，表示HTML文档的根元素。
+3. `<head>`标签内包含了该页面的元信息和引用的外部资源，如页面标题和样式表。
+4. `<title>`标签定义了页面的标题，在浏览器的标题栏中显示。
+5. `<style>`标签中的CSS样式规则定义了页面中各个元素的样式。
+6. `<body>`标签内包含了页面的主要内容。
+7. `<h1>`标签定义了页面的主标题，显示为居中的黑色文字。
+8. `<div class="container">`定义了一个包含三个列的容器。
+9. `<div class="left-column">`定义了左侧列，固定宽度为200px，背景色为灰色。
+10. `<div class="middle-column">`定义了中间列，占据剩余空间，背景色为白色。
+11. `<form>`标签定义了一个表单，包含了用户输入信息的字段。
+12. `<label>`标签用于定义表单字段的标签。
+13. `<input>`标签用于定义表单字段的输入框、单选框和复选框。
+14. `<select>`标签定义了一个下拉菜单。
+15. `<option>`标签定义了下拉菜单的选项。
+16. `<input type="submit">`定义了一个提交按钮。
+17. `<div class="right-column">`定义了右侧列，固定宽度为200px，背景色为灰色。
+18. 页面结束的`</html>`标签。
+
+这段代码主要使用了HTML和CSS来创建了一个简单的奶茶点餐页面的界面布局和样式。使用者可以输入姓名、选择奶茶种类、选择糖分和选择加料，并点击提交按钮来提交点餐信息。
+
+希望以上解释对你有所帮助，如果还有其他问题，请随时提问。
+
+
+
+
+
+这段代码是CSS样式表，用于设置HTML页面中各个元素的样式。让我逐行解释代码的含义：
+
+1. `*`选择器表示应用样式到所有元素，`box-sizing: border-box;`用于将元素的宽度和高度包括内边距和边框在内。
+2. `body`选择器设置整个页面的样式，包括字体、背景颜色、边距和内边距等。
+3. `h1`选择器设置标题的样式，包括文本居中和颜色。
+4. `.container`选择器设置一个容器的样式，使用flex布局，将容器内的元素水平排列。
+5. `.left-column`选择器设置左侧列的样式，包括宽度、背景颜色、内边距等。
+6. `.middle-column`选择器设置中间列的样式，通过`flex-grow: 1;`将其占据剩余空间，背景颜色、内边距和外边距。
+7. `.right-column`选择器设置右侧列的样式，包括宽度、背景颜色、内边距等。
+8. `form`选择器设置表单的样式，包括最大宽度和居中对齐。
+9. `label`选择器设置标签的样式，包括显示为块级元素、下边距、颜色和字体粗细。
+10. `input[type="text"], select`选择器设置文本输入框和下拉菜单的样式，包括宽度、内边距、边框样式和下边距。
+11. `input[type="radio"], input[type="checkbox"]`选择器设置单选框和复选框的样式，设置右边距。
+12. `input[type="submit"]`选择器设置提交按钮的样式，包括背景颜色、颜色、字体粗细、内边距、边框样式、边框圆角和光标形状。
+13. `input[type="submit"]:hover`选择器设置提交按钮在鼠标悬停时的样式，包括背景颜色的改变。
+
+这些CSS样式是用于美化HTML页面，设置了字体样式、背景颜色、盒模型样式、边距、内边距以及表单元素的样式等。
+
+希望以上解释对你有所帮助，如果还有其他问题，请随时提问。
+
+
+
+
+
+HTML和CSS是用于构建和样式化网页的两种核心技术。
+
+HTML，全称为超文本标记语言（Hypertext Markup Language），用于描述网页的结构和内容。它使用一系列的标签来标记和组织不同的元素，比如标题、段落、图像、链接等。HTML是一种标记语言，它告诉浏览器如何显示网页的内容。
+
+下面是一个简单的HTML示例：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>我的网页</title>
+</head>
+<body>
+  <h1>欢迎来到我的网页！</h1>
+  <p>这是一个段落。</p>
+  <img src="image.jpg" alt="图片">
+  <a href="https://www.example.com">这是一个链接</a>
+</body>
+</html>
+```
+
+在上面的示例中，`<!DOCTYPE html>` 声明了文档类型为HTML，`<html>` 标签是整个HTML文档的根元素，`<head>` 标签用于定义文档的头部信息，包括标题、样式表等。`<body>` 标签用于定义文档的主体部分，包含网页的实际内容。`<h1>` 是一个标题标签，`<p>` 是一个段落标签，`<img>` 是一个图像标签，`<a>` 是一个链接标签。
+
+CSS，全称为层叠样式表（Cascading Style Sheets），用于控制和样式化网页的外观和布局。它通过选择器和声明来选择网页中的元素并设置样式。CSS与HTML结合使用，可以实现各种各样的网页样式效果，比如字体、颜色、布局、边框等。
+
+下面是一个简单的CSS示例：
+
+```css
+h1 {
+  color: blue;
+  font-size: 24px;
+}
+
+p {
+  color: red;
+}
+
+a {
+  text-decoration: none;
+}
+```
+
+在上面的示例中，`h1` 选择器选择所有的 `h1` 标签，将其文本颜色设置为蓝色，字体大小设置为24像素。`p` 选择器选择所有的 `p` 标签，将其文本颜色设置为红色。`a` 选择器选择所有的链接，将其文本装饰（下划线）设置为无。
+
+通过将上述的CSS代码添加到HTML文档中的 `<style>` 标签内或外部的CSS文件中，可以实现对HTML元素的样式控制。
+
+综上所述，HTML用于定义网页的结构和内容，CSS用于控制网页的外观和布局。它们是构建网页的重要工具，相互配合使用可以创建出美观和功能丰富的网页。
+
