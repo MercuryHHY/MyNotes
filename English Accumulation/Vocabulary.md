@@ -12,3 +12,39 @@ render up    放弃
 
 
 
+**the active ingredient**
+
+有效成分
+
+
+
+**performance**
+
+n. 性能；绩效；表演；执行；表现
+
+
+
+unfortunately
+
+alternatively       al-ter-na-tively
+
+release			re-le-ase
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

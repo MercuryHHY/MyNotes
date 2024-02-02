@@ -497,13 +497,15 @@ F5 ，启动调试，或者执行
 
 ### 1，字符串的比较
 
-在C#中，重载的==   与 ！=  运算符 比较的只是字符串的内容，而不是比较是否指代同一字符串实列
+在C#中的string，重载的==   与 ！=  运算符 比较的只是字符串的内容，而不是比较是否指代同一字符串实列（值比较）
 
 这与C++要区分
 
+但是在C#中  其他类型的比较，比较的都是两个变量是否指向的是同一个变量（引用比较）
 
 
-### 2，string的方法使用说明，特别说明
+
+### 2，string的方法使用说明，特别说明（常用操作）
 
 Format的使用，可以格式化字符串，造就一个所需的字符串
 
@@ -599,6 +601,16 @@ string[] fruits = str.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 ```
 
 需要注意的是，`Split`方法返回一个字符串数组，包含分割后的子字符串。如果需要丢弃结果中的空字符串，可以使用 `StringSplitOptions.RemoveEmptyEntries` 参数。
+
+### 
+
+
+
+
+
+
+
+
 
 
 
@@ -1642,6 +1654,238 @@ Dictionary<string, object>
 类似这种，好用
 
 
+
+在 C# 中，`Dictionary<TKey, TValue>` 属于泛型集合，是一个存储键值对的集合，这里的 TKey 是字典键的类型，TValue 是与键相关联的值的类型。`Dictionary<TKey, TValue>` 在 System.Collections.Generic 命名空间中。
+
+下面是 `Dictionary<TKey, TValue>` 的使用说明：
+
+1. **引入命名空间**：
+   ```csharp
+   using System.Collections.Generic;
+   ```
+
+2. **创建 Dictionary**：
+   ```csharp
+   Dictionary<int, string> myDictionary = new Dictionary<int, string>();
+   ```
+
+3. **添加元素**：
+   使用 `Add` 方法添加元素到字典。如果键已经存在会抛出一个 `ArgumentException`。
+   ```csharp
+   myDictionary.Add(1, "One");
+   myDictionary.Add(2, "Two");
+   // ...
+   
+   // 另一种检查键是否存在的方式是使用索引运算符，但这会覆盖原有键对应的值
+   myDictionary[3] = "Three"; // 如果键 3 存在，会覆盖；不存在，会添加。
+   ```
+
+4. **删除元素**：
+   `Remove` 方法通过键来删除元素。
+   ```csharp
+   myDictionary.Remove(2); // 删除键为 2 的元素
+   ```
+
+5. **查找元素**：
+   使用 `ContainsKey` 方法来检查是否包含某个键。
+   ```csharp
+   if (myDictionary.ContainsKey(1)) {
+       // 键存在
+   }
+   ```
+
+   使用 `TryGetValue` 方法尝试获取与键相关联的值，如果键存在，返回 true；否则返回 false，并且 out 参数返回 TValue 的默认值。
+   ```csharp
+   string value;
+   if (myDictionary.TryGetValue(1, out value)) {
+       // 成功找到键，并获取值
+   }
+   ```
+
+6. **访问元素**：
+   通过键直接访问。
+   ```csharp
+   string value = myDictionary[1]; // 获取键 1 对应的值，如果键不存在会抛出一个 KeyNotFoundException
+   ```
+
+7. **修改元素**：
+   通过键直接赋值来修改字典中的元素。
+   ```csharp
+   myDictionary[1] = "OneUpdated"; // 将键 1 对应的值更新为 "OneUpdated"
+   ```
+
+8. **遍历 Dictionary**：
+   可以使用 `foreach` 循环来遍历键值对。
+   ```csharp
+   foreach (KeyValuePair<int, string> kvp in myDictionary) {
+       Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+   }
+   ```
+
+   也可以单独遍历字典中的键或值。
+   ```csharp
+   foreach (int key in myDictionary.Keys) {
+       // 遍历键
+   }
+   
+   foreach (string value in myDictionary.Values) {
+       // 遍历值
+   }
+   ```
+
+9. **清空 Dictionary**：
+   清空字典中的所有元素。
+   ```csharp
+   myDictionary.Clear(); // 清空字典
+   ```
+
+10. **获取元素数量**：
+    使用 `Count` 属性来获取字典中元素的数量。
+    ```csharp
+    int count = myDictionary.Count; // 获取字典中的元素个数
+    ```
+
+`Dictionary<TKey, TValue>` 在内部使用哈希表来存储数据，因此它的查找和添加操作的平均时间复杂度接近于 O(1)。但是要确保 TKey 类型区分良好的哈希代码，以便维护这种性能。
+
+请注意，`Dictionary<TKey, TValue>` 不保证元素的顺序，如果需要有序字典可以使用 `SortedDictionary<TKey, TValue>` 类。
+
+如果您想了解更多关于 `Dictionary<TKey, TValue>` 类的高级用法和注意事项，请参考以下几点：
+
+### 线程安全
+`Dictionary<TKey, TValue>` 不是线程安全的。如果需要在多线程环境中使用，可以考虑使用 `ConcurrentDictionary<TKey, TValue>` 类，位于 `System.Collections.Concurrent` 命名空间，它提供了线程安全的字典操作。
+
+### 自定义对象作为键
+如果您使用自定义对象类型作为键 (`TKey`)，那么您需要确保正确地实现了这个类型的 `GetHashCode` 和 `Equals` 方法，因为 `Dictionary<TKey, TValue>` 使用这些方法来确定键的唯一性。
+
+### 使用值类型作为键
+当值类型（如 `int`, `double`, `struct` 等）作为字典的键时，请注意值类型的装箱和拆箱操作，它们可能影响性能。特别是使用结构体作为键时，确保它不会因为频繁的复制而导致性能问题。
+
+### 序列化与反序列化
+如果您需要将 `Dictionary<TKey, TValue>` 对象进行序列化和反序列化（例如，保存到文件或通过网络传输），请确保键和值的类型都是可序列化的。
+
+### 容量与性能
+字典的容量会随着元素的添加自动增长。如果您事先知道将要存储的元素数量，可以在创建字典时指定初始容量，以减少重新哈希的次数和提高性能。
+
+```csharp
+int initialCapacity = 100;
+Dictionary<int, string> myDictionary = new Dictionary<int, string>(initialCapacity);
+```
+
+### 查找性能
+如果频繁地对字典进行查找操作，要确保如果使用字符串作为键时，考虑使用 `StringComparer.OrdinalIgnoreCase` 或适当的 `StringComparer`。这样可以减少因大小写转换所付出的性能代价。
+
+```csharp
+Dictionary<string, string> myDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+```
+
+### 比较器的使用
+可以自定义 `IEqualityComparer<TKey>` 接口的实现来自定义比较器，然后将其传递给字典，以自定义键的比较逻辑。
+
+### 集合的视图
+`Dictionary<TKey, TValue>.KeyCollection` 和 `Dictionary<TKey, TValue>.ValueCollection` 类型提供了对字典键和值的集合的视图。这些视图是动态的；即，它们反映了对字典的更改。
+
+### LINQ 与字典
+`Dictionary<TKey, TValue>` 是可以与 LINQ (Language Integrated Query) 一起使用的，因此您可以轻松地查询字典或进行变换。
+
+```csharp
+var filteredDictionary = myDictionary.Where(kvp => kvp.Value.StartsWith("One"))
+                                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+```
+
+请记住，LINQ 查询返回的是集合的副本，而不是原始集合的直接视图。
+
+使用 `Dictionary<TKey, TValue>` 类时了解这些概念和技巧将帮助您更有效地使用这个强大的集合类型。
+
+除了前面提到的详细使用说明和高级用法，以下是一些其他相关的点，这些点也可以提高 `Dictionary<TKey, TValue>` 使用体验：
+
+### 复杂度
+`Dictionary<TKey, TValue>` 实例的查找、添加和删除操作的平均时间复杂度是 O(1)。然而，在最坏情况下，这些操作的时间复杂度可能会退化到 O(n)，其中 n 是字典中的元素数。这种情况通常发生在提供的哈希函数产生了太多的冲突时。
+
+### 哈希码
+键的哈希码是通过 `GetHashCode` 方法得到的，这个方法返回一个 32 位整数。哈希表使用这个哈希码来快速查找键值对。为了避免冲突和维持字典性能，确保 `GetHashCode` 方法提供的哈希码可以均匀地分散。
+
+### 并发修改
+在对 `Dictionary<TKey, TValue>` 进行枚举时，如果字典内容被修改，比如添加或删除元素，这会导致 `InvalidOperationException`。如果您需要在枚举时修改集合，可以先将元素拷贝到另一集合，再对其进行修改操作。
+
+### Capacity 和 Count 属性
+字典的 `Capacity` 属性是字典可以储存的元素的总数，而 `Count` 属性是字典当前包含的键值对数目。调整 `Capacity` 可以提高大量添加操作后的性能。
+
+### 使用 `KeyValuePair<TKey, TValue>` 结构
+当遍历 `Dictionary<TKey, TValue>` 时，您会遍历 `KeyValuePair<TKey, TValue>` 实例。这是一个结构体，包含一个不可变的键和一个可变的值。您可以读取 `Key` 属性，但不能设置它，因为它是只读的。
+
+### 其他集合与字典的互操作
+您可以使用 LINQ 或其他方法将其他集合转换为字典。如果有一个列表或数组，可以使用 `ToDictionary` 扩展方法将其转换为 `Dictionary<TKey, TValue>`。
+
+### 复制字典
+如果你需要一个字典的副本，你可以使用字典构造函数或者 LINQ 来创建一个新的字典。
+
+### 字典和 JSON
+字典很容易转换为 JSON 格式，并在 Web API 中使用。序列化和反序列化可通过类似 Newtonsoft.Json 或 System.Text.Json 提供的功能进行。
+
+确保在使用 `Dictionary<TKey, TValue>` 类时，充分理解其特性和行为，这样可以编写出更健壮、可靠和高性能的代码。
+
+### 相等性的处理
+当比较键的相等性时，字典使用 `EqualityComparer<TKey>.Default`。对于大多数类型来说，这等同于调用对象的 `Equals` 和 `GetHashCode` 方法。如果你的键类型是引用类型，并且你希望字典以引用相等性来比较键，你需要提供一个自定义的 `IEqualityComparer<T>` 实例。
+
+### 只读字典
+如果你想防止字典被修改，可以使用 `ReadOnlyDictionary<TKey, TValue>` 包装你的字典。这是在 `System.Collections.ObjectModel` 命名空间中。
+
+```csharp
+var readOnlyDict = new ReadOnlyDictionary<TKey, TValue>(myDictionary);
+```
+
+### 避免大量删除操作带来的性能问题
+如果你的用例涉及到大量的删除操作，当删除项是大量非连续内存块时，性能可能会下降，因此在某些情况下，重新创建字典可能比删除许多项更高效。
+
+### 自定义字典
+如果 `Dictionary<TKey, TValue>` 类提供的功能不足以满足需求，你可以继承它并添加自定义行为，或者实现 `IDictionary<TKey, TValue>` 接口来从头开始构建自己的字典结构。
+
+### 存储空间优化
+如果存储的键和值的类型占用的存储空间很大，或者你要处理的字典数量非常多，那么考虑存储空间优化将很有必要。比如使用值类型而不是对象或者使用引用类型的 ‘struct’ 来减少内存消耗。
+
+### 诊断性能问题
+如果你遇到了字典性能问题，确保诊断是否是因为哈希码冲突导致的，你可以统计存储桶（内部数组）的使用情况，来看是否均衡分布。如果不是，那可能你需要重新设计键的哈希函数，或者考虑使用其他类型的数据结构。
+
+### 内存消耗评估
+当处理大规模数据时，请注意 `Dictionary<TKey, TValue>` 的内存消耗。随着集合增长，它将需要更多的内存，可能导致 `OutOfMemoryException`，确保你的应用程序可以高效地处理内存。
+
+### `TryGetValue` 和 `ContainsKey` 方法
+在尝试从字典中检索值时，推荐使用 `TryGetValue` 方法，它提供了一种安全的方式来尝试获取与给定键相关联的值，而不会抛出异常。
+
+### 序列化注意事项
+如果你需要自定义序列化行为，比如在字典中使用非序列化对象或需要以特别的格式序列化，你可能需要实现自定义序列化和反序列化逻辑。
+
+最后，始终根据你的实际需求来选择合适的数据结构。`Dictionary<TKey, TValue>` 是一种非常灵活和强大的数据结构，但也不是对所有用例都是最佳选择。评估你的应用程序的特定需求，并确定 `Dictionary` 是否是解决这些问题的最佳方式。如果需要，也可以考虑 `SortedList<TKey, TValue>`，`SortedDictionary<TKey, TValue>` 等其他集合类型。
+
+### 调试支持
+在调试过程中，`Dictionary<TKey, TValue>` 类有内置的调试视图，如 `Mscorlib_CollectionDebugView`，它可以帮助你更好地查看字典在调试时的状态，例如查看当前的键值对、存储桶信息等。这对于诊断问题或理解字典的运行情况非常有用。
+
+### 线程安全
+`Dictionary<TKey, TValue>` 本身不是线程安全的。如果你需要在多线程环境中访问字典，并且操作必须是原子的，可以考虑使用 `ConcurrentDictionary<TKey, TValue>` 类，它在 `System.Collections.Concurrent` 命名空间中提供，并为多线程场景专门设计。
+
+```csharp
+var concurrentDictionary = new ConcurrentDictionary<TKey, TValue>();
+```
+
+### 序列化和反序列化
+当涉及到序列化和反序列化字典时（例如，使用 JSON），请确保字典的键是可序列化的。对于复杂类型的键，请确保正确实现了序列化关键方法`（如 ToString()` 和 `GetHashCode`）以便能够正确地序列化和反序列化。
+
+### 文化敏感性
+如果键是字符串类型，那么进行哈希和比较时考虑文化敏感性可能很重要。默认的比较器不考虑区域性，但在某些情况下，你可能需要一个考虑到文化特定规则的比较器。
+
+### 可变键的风险
+如果你使用可变类型（其属性或字段可以改变的类型）作为键，那么一旦键值改变，可能会影响键的哈希码，从而使原键值对在字典中无法找到。避免使用可变对象作为字典键可以避免此类问题。
+
+### 内存敏感的应用
+在内存敏感的应用程序中，务必注意 `Dictionary<TKey, TValue>` 的内存用量。设置合适的初始容量和负载因子，以优化内存使用，特别是在处理大量的小型字典时。
+
+### 扩展方法
+字典可以与 LINQ 配合使用，提供强大的查询和操作功能。可以用 LINQ 扩展方法如 `Where`, `Select`, `Aggregate` 等对字典进行操作，实现功能更为丰富和灵活的数据处理。
+
+### 性能测试
+在关键性能场景中使用字典前，建议进行充分的性能测试。这包括评估内存占用、操作的响应时间以及在极端条件下的性能表现。
+
+结合以上的考虑因素，您可以制定策略以确保`Dictionary<TKey, TValue>`的使用尽可能地与您的场景和需求匹配。务必记住，在涉及到性能、内存管理、线程安全、键管理和序列化等关键系统特性时，理解和正确使用字典是至关重要的。
 
 
 
@@ -3484,9 +3728,131 @@ IsNullable标记可为空
 
 
 
+## Guid
+
+在 C# 中，`Guid` 是一个结构，代表了一个全球唯一标识符（Globally Unique Identifier）。`Guid` 结构在 `System` 命名空间下，它通常用来为应用程序中的对象提供一个唯一的标识符。由于其唯一性质，`Guid`在需要确保对象的独一无二，例如在数据库中作为记录的主键或者在分布式系统中为不同的组件提供一个唯一的标识符时，非常有用。
+
+`Guid` 是一个 128 位整数（16 字节），通常用 32 个十六进制数字表示，并由五组数字组成，格式为 `8-4-4-4-12`，例如 `123e4567-e89b-12d3-a456-426614174000`。
+
+### 创建 Guid
+
+C# 中创建 `Guid` 对象可以通过几种方式：
+
+1. `Guid.NewGuid()`: 创建一个新的、唯一的 Guid。
+
+```csharp
+Guid guid = Guid.NewGuid();
+Console.WriteLine(guid.ToString());
+```
+
+2. 使用 Guid 的构造函数，可以从一个字节数组或者某些特定的字符串格式创建一个 Guid。
+
+```csharp
+byte[] bytes = new byte[16];
+// 假设 bytes 数组已通过某种方式获取
+Guid guidFromBytes = new Guid(bytes);
+
+string guidString = "123e4567-e89b-12d3-a456-426614174000";
+Guid guidFromString = new Guid(guidString);
+```
+
+3. `Guid.Parse(string)` 和 `Guid.TryParse(string, out Guid)`: 从一个字符串解析出 Guid。
+
+```csharp
+string guidString = "123e4567-e89b-12d3-a456-426614174000";
+Guid parsedGuid = Guid.Parse(guidString);
+
+Guid tryParsedGuid;
+if (Guid.TryParse(guidString, out tryParsedGuid))
+{
+    // 解析成功
+}
+```
+
+### Guid 格式
+
+`Guid` 提供了多种格式化选项，可以通过 `ToString` 方法指定：
+
+```csharp
+Guid guid = Guid.NewGuid();
+
+// "D" 格式 (默认): 32 位数字，连字符分隔
+Console.WriteLine(guid.ToString("D"));
+
+// "N" 格式: 32 位数字，无连字符
+Console.WriteLine(guid.ToString("N"));
+
+// "B" 格式: 32 位数字，括在大括号内，有连字符
+Console.WriteLine(guid.ToString("B"));
+
+// "P" 格式: 32 位数字，括在圆括号内，有连字符
+Console.WriteLine(guid.ToString("P"));
+
+// "X" 格式: 用大括号括起来的四个十六进制值，包含子段
+Console.WriteLine(guid.ToString("X"));
+```
+
+### 比较 Guid
+
+`Guid` 结构实现了 `IEquatable<Guid>` 接口，所以你可以使用 `Equals` 方法比较两个 `Guid` 对象是否相等。同样，可以使用 `==` 和 `!=` 运算符。
+
+### 注意事项
+
+- 虽然 `Guid` 基本上可以保证是全球唯一的，但技术上它们是使用算法生成的，因此不能保证绝对唯一性。
+- 使用 `Guid` 作为数据库表的主键时，需要考虑到 `Guid` 的存储和性能代价，因为其比传统的整数主键大并且可能影响插入性能。
+
+`Guid` 结构是 .NET 为开发者提供的一个强大工具，用于生成和操作唯一标识符。在分布式系统、数据库和需要唯一性的任何场景中，`Guid` 是常见的选择。
 
 
 
+由于您提到了要“继续”，我假设您可能对`Guid`的其他方面或高级特性感兴趣，或者想要解决具体问题。以下是一些关于`Guid`更高级一点的话题：
+
+### Guid 版本
+
+`Guid` 有多个版本，它们是使用不同的算法生成的。最常用的是版本 4，它基本上是随机生成的。Guid 的第 13 位（按照传统表示形式）是它的版本号。在 .NET 中，使用 `Guid.NewGuid()` 方法生成的 Guid 是版本 4，它通过随机数生成器来创建。
+
+### Guid 如何生成
+
+在 .NET Core 和 .NET 5+ 中，`Guid` 使用的伪随机数生成器依赖于操作系统提供的机制。Windows 上通常使用 `CoCreateGuid` API，而在 Unix-like 系统上使用 `/dev/urandom`。
+
+### 性能问题
+
+由于 `Guid` 是由 128 位组成，它们会占用比整型更多的空间，并可能导致数据库或其他存储系统的性能问题。此外，在索引时，随机的 `Guid` 值会引起索引碎片和额外的写入负载。在数据库中对 Guid 进行索引时，一个常见的建议是使用顺序 `Guid`（例如 SQL Server 中的 `NEWSEQUENTIALID()` 函数），这样在插入新条目时，索引不会产生太多的随机 I/O。
+
+### Guid 安全性
+
+尽管 `Guid` 通常用于生成狯猾复杂的键值，这意味着它们通常不容易被猜出，但它们不应被视为安全的令牌，因为标准的 `Guid` 算法并不是为了不可预知性而设计的。在需要令牌或键的场景中，应使用专门为安全性设计的算法（例如使用足够长度的随机数，并提供强防护，如使用加密的PRNG）。
+
+### 适用场景
+
+`Guid` 在以下场景下尤为有用：
+- 分布式系统：保证即使在不同系统和上下文中也能够生成唯一的标识符。
+- 数据库：作为记录的主键，特别是当数据需要跨多个数据库或数据库表分区时。
+- 文件名或临时对象：确保不会与现有文件或对象名冲突。
+
+### 示例：在数据库操作中使用 Guid
+
+在使用 Entity Framework (EF) 进行数据库操作时，`Guid` 通常被用作实体的主键：
+
+```csharp
+public class User
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string Name { get; set; }
+}
+
+// 在添加新用户到数据库时，每个用户都会被分配一个唯一的 Guid
+using (var context = new UserContext())
+{
+    var newUser = new User { Name = "Alice" };
+    context.Users.Add(newUser);
+    context.SaveChanges();
+}
+```
+
+在这个例子中，每创建一个新的 `User` 实例，都会自动为其 `Id` 属性生成一个新的 `Guid`。
+
+如果您有特定的问题或用例，我可以提供更加针对性的指导和示例。请随时提出具体问题！
 
 
 
