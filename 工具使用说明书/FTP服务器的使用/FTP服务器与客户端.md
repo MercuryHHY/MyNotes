@@ -10,7 +10,9 @@
 
 https://www.bilibili.com/video/BV1vW411h7DQ/?spm_id_from=333.337.search-card.all.click
 
+报错问题解决方法：
 
+[FileZilla Server 搭建FTP服务器时出现的报错（完美解决）_could not load certificate file: error:02001002:sy-CSDN博客](https://blog.csdn.net/lsx15521290250/article/details/121977505)
 
 目前我的电脑的Feilzilla 服务器 是已经配置好的，打开可直接用
 

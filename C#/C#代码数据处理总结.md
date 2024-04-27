@@ -591,6 +591,64 @@ if (exists)
 
 
 
+### `string`类型转换为`DateTime`
+
+在C#中，将`string`类型转换为`DateTime`类型是一个常见操作，尤其是在处理日期和时间相关的数据时。可以通过`DateTime.Parse`、`DateTime.TryParse`、`DateTime.ParseExact`和`DateTime.TryParseExact`等方法来实现。下面是这些方法的基本用法：
+
+#### 1. `DateTime.Parse`
+`DateTime.Parse`方法尝试将字符串转换为`DateTime`对象。如果字符串有效且符合日期和时间的格式，转换将成功。如果不符合格式，将抛出`FormatException`异常。
+
+```csharp
+string dateString = "2023-12-31";
+DateTime dateTime = DateTime.Parse(dateString);
+Console.WriteLine(dateTime); // 输出：2023-12-31 00:00:00
+```
+
+#### 2. `DateTime.TryParse`
+`DateTime.TryParse`方法类似于`Parse`，但不会在转换失败时抛出异常。它返回一个布尔值，指示转换是否成功，而转换的`DateTime`对象通过方法的输出参数返回。
+
+```csharp
+string dateString = "2023-12-31";
+DateTime dateTime;
+bool result = DateTime.TryParse(dateString, out dateTime);
+if (result)
+{
+    Console.WriteLine(dateTime); // 输出：2023-12-31 00:00:00
+}
+else
+{
+    Console.WriteLine("Invalid date string");
+}
+```
+
+#### 3. `DateTime.ParseExact`
+`DateTime.ParseExact`方法允许你指定字符串的确切格式。如果字符串与提供的格式模板完全匹配，这种方法特别有用，因为它提供了更精确的控制。
+
+```csharp
+string dateString = "31/12/2023";
+DateTime dateTime = DateTime.ParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+Console.WriteLine(dateTime); // 输出：2023-12-31 00:00:00
+```
+
+#### 4. `DateTime.TryParseExact`
+`DateTime.TryParseExact`类似于`ParseExact`，但它不会抛出异常，而是返回一个布尔值，指示转换是否成功，并通过输出参数返回`DateTime`对象。
+
+```csharp
+string dateString = "31-12-2023";
+DateTime dateTime;
+bool result = DateTime.TryParseExact(dateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime);
+if (result)
+{
+    Console.WriteLine(dateTime); // 输出：2023-12-31 00:00:00
+}
+else
+{
+    Console.WriteLine("Invalid date string");
+}
+```
+
+选择哪种方法取决于你的具体需求，例如是否需要自定义日期格式，以及如何处理无效的输入。通常，当有具体的格式要求时，使用`ParseExact`或`TryParseExact`可以提供更精确的控制。在处理不确定格式的字符串时，使用`TryParse`而不是`Parse`可以避免因格式错误而引发异常。
+
 
 
 ### TimeSpan.FromDays(1)
@@ -854,3 +912,88 @@ Console.WriteLine($"Amount after {years} years: {amount:C}");
 在这个示例中，`Decimal.Pow`方法用于执行`decimal`类型的指数运算，确保计算过程中的精度。这样的高精度计算对于财务分析和预测非常重要。
 
 通过上述讨论和示例，可以看出`decimal`类型在需要高精度计算的场景下非常有用，但也需要注意其性能影响和与其他类型的交互方式。
+
+
+
+
+
+
+
+
+
+###  DependencyProperty 
+
+当某个 DependencyProperty 属性值发生变化时，可以触发属性更改事件、自动进行属性绑定、使用样式进行外观的更改等。以下是一个更有代表性的示例，展示了如何使用 DependencyProperty 实现属性绑定和动态样式修改的功能。
+
+```csharp
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+
+public class MyButton : Button
+{
+    // 定义一个依赖属性 IsHighlighted
+    public static readonly DependencyProperty IsHighlightedProperty =
+        DependencyProperty.Register("IsHighlighted", typeof(bool), typeof(MyButton), new PropertyMetadata(false, OnIsHighlightedChanged));
+
+    // 封装 IsHighlighted 依赖属性的 CLR 属性包装器
+    public bool IsHighlighted
+    {
+        get { return (bool)GetValue(IsHighlightedProperty); }
+        set { SetValue(IsHighlightedProperty, value); }
+    }
+
+    // IsHighlighted 依赖属性值变化时的回调方法
+    private static void OnIsHighlightedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        MyButton button = (MyButton)d;
+
+        // 根据新的属性值来动态修改按钮的样式
+        if ((bool)e.NewValue)
+        {
+            button.Background = new SolidColorBrush(Colors.Yellow);
+        }
+        else
+        {
+            button.Background = new SolidColorBrush(Colors.Transparent);
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // 创建一个 MyButton 实例
+        MyButton myButton = new MyButton();
+        myButton.Content = "Click Me";
+
+        // 设置属性绑定
+        Binding binding = new Binding("IsHighlighted");
+        binding.Source = myButton;
+        myButton.SetBinding(MyButton.IsHighlightedProperty, binding);
+
+        // 添加按钮到窗口
+        Window window = new Window();
+        window.Content = myButton;
+
+        // 启动窗口
+        window.ShowDialog();
+    }
+}
+```
+
+上述代码中，我们定义了一个名为 MyButton 的自定义按钮类。该类有一个 IsHighlighted 的依赖属性，当该属性的值为 true 时，按钮会显示为黄色的背景，当值为 false 时，按钮显示透明背景。
+
+在按钮类的 OnIsHighlightedChanged 回调方法中，根据 IsHighlighted 的新值来动态修改按钮的样式。当 IsHighlighted 的值为 true 时，将按钮的 Background 设置为黄色的 SolidColorBrush，当 IsHighlighted 的值为 false 时，将 Background 设置为透明。
+
+在测试代码中，我们创建了一个 MyButton 的实例，并将它的 IsHighlighted 属性绑定到它自己的 IsHighlighted 依赖属性上。这意味着当该属性的值发生变化时，按钮的样式也会自动更新。
+
+最后，我们将按钮添加到窗口中并显示窗口。当按钮点击时，可以通过设置 IsHighlighted 属性的值来改变按钮的样式（黄色背景或透明背景），从而演示了 DependencyProperty 的使用意义。
+
+注意，此示例仅说明了 DependencyProperty 的基本概念和用法。实际应用中可能还需要处理更复杂的属性绑定、样式化和动画等情况，以满足具体的需求。
+
+
+
+
+
