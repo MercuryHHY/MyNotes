@@ -84,9 +84,9 @@
 
 
 
-查询得到 Git的URL
+进入仓库，选择分支
 
-![4](D:\黄浒烨\TY--MD文件\Git\PIC\4.png)
+[项目 · GitLab (hymson.com.cn)](http://gitlab.hymson.com.cn:3080/)
 
 
 
